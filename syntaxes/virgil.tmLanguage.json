@@ -112,6 +112,10 @@
                     "match": "\\b(def)\\b"
                 },
                 {
+                    "name": "storage.type.function.virgil",
+                    "match": "\\b(fun)\\b"
+                },
+                {
                     "name": "storage.type.var.virgil",
                     "match": "\\b(var)\\b"
                 },
