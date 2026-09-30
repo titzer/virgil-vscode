@@ -1,0 +1,9 @@
+**
+!dist/**
+!grammar/tree-sitter-virgil.wasm
+!syntaxes/**
+!language-configuration.json
+!package.json
+!README.md
+!CHANGELOG.md
+!LICENSE

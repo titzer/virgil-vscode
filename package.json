@@ -1,0 +1,158 @@
+{
+  "name": "virgil",
+  "displayName": "Virgil",
+  "description": "Syntax highlighting, semantic highlighting, and debugging for the Virgil programming language",
+  "version": "0.1.0",
+  "publisher": "titzer",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/titzer/virgil-vscode.git"
+  },
+  "homepage": "https://github.com/titzer/virgil",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Debuggers"
+  ],
+  "keywords": [
+    "virgil",
+    "v3"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:virgil",
+    "onDebugResolve:virgil",
+    "onDebugDynamicConfigurations:virgil"
+  ],
+  "workspaceTrust": {
+    "request": "never"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "virgil",
+        "aliases": [
+          "Virgil"
+        ],
+        "extensions": [
+          ".v3"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "virgil",
+        "scopeName": "source.virgil",
+        "path": "./syntaxes/virgil.tmLanguage.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[virgil]": {
+        "editor.semanticHighlighting.enabled": true
+      }
+    },
+    "breakpoints": [
+      {
+        "language": "virgil"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "virgil",
+        "label": "Virgil Debugger",
+        "languages": [
+          "virgil"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "debugger": {
+                "type": "string",
+                "description": "Path to the Virgil compiler (v3c) used as the debugger.",
+                "default": "v3c"
+              },
+              "program": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Virgil source files of the program to debug.",
+                "default": [
+                  "${file}"
+                ]
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "description": "Stop at the start of main().",
+                "default": true
+              },
+              "trace": {
+                "type": "boolean",
+                "description": "Log Debug Adapter Protocol traffic.",
+                "default": false
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "virgil",
+            "request": "launch",
+            "name": "Debug current Virgil file",
+            "debugger": "v3c",
+            "program": [
+              "${file}"
+            ],
+            "stopOnEntry": true
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "Virgil: Launch",
+            "description": "Debug a Virgil program in the interpreter.",
+            "body": {
+              "type": "virgil",
+              "request": "launch",
+              "name": "Debug current Virgil file",
+              "debugger": "v3c",
+              "program": [
+                "^\"\\${file}\""
+              ],
+              "stopOnEntry": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "esbuild": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --define:import.meta.url=__import_meta_url --banner:js=\"var __import_meta_url = require('url').pathToFileURL(__filename).href;\"",
+    "copy-wasm": "node -e \"require('fs').copyFileSync('node_modules/web-tree-sitter/tree-sitter.wasm','dist/tree-sitter.wasm')\"",
+    "build": "npm run esbuild -- --sourcemap && npm run copy-wasm",
+    "watch": "npm run esbuild -- --sourcemap --watch",
+    "typecheck": "tsc -p . --noEmit",
+    "grammar": "cd grammar && tree-sitter generate && tree-sitter build --wasm -o tree-sitter-virgil.wasm .",
+    "vscode:prepublish": "rm -rf dist && npm run esbuild -- --minify && npm run copy-wasm",
+    "package": "vsce package",
+    "install-local": "npm run package && code --install-extension virgil-*.vsix --force"
+  },
+  "dependencies": {
+    "@vscode/debugadapter": "^1.68.0",
+    "web-tree-sitter": "^0.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.25.0",
+    "tree-sitter-cli": "^0.25.0",
+    "typescript": "^5.0.0"
+  }
+}

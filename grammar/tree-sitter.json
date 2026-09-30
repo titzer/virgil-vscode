@@ -1,0 +1,6 @@
+{
+  "grammars": [
+    { "name": "virgil", "camelcase": "Virgil", "scope": "source.virgil", "path": ".", "file-types": ["v3"] }
+  ],
+  "metadata": { "version": "0.1.0", "license": "Apache-2.0", "description": "Virgil grammar for tree-sitter" }
+}

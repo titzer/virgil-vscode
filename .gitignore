@@ -1,0 +1,17 @@
+node_modules/
+dist/
+*.vsix
+package-lock.json
+# tree-sitter generate output; only grammar.js and the built .wasm are tracked
+grammar/src/
+grammar/bindings/
+grammar/build/
+grammar/Cargo.toml
+grammar/Package.swift
+grammar/binding.gyp
+grammar/go.mod
+grammar/pyproject.toml
+grammar/setup.py
+grammar/Makefile
+grammar/CMakeLists.txt
+grammar/package.json
